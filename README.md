@@ -20,3 +20,12 @@ in CAN messages which have an ID of 0x123, add one to the value of each data
 byte in the received message, and then write that message back out on to the
 bus with the message ID defined by the macro MSGID.
 
+## Broadcast Manager Cyclic Demo
+
+This program demonstrates sending a set of cyclic messages out on to the CAN
+bus using SocketCAN's Broadcast Manager interface. The intended behavior of
+this program is to send four cyclic messages out on to the CAN bus. These
+messages have IDs ranging from 0x0C0 to 0x0C3. These messages will be sent out
+one at a time every 1200 milliseconds. Once all messages have been sent,
+transmission will begin again with message 0x0C0.
+
