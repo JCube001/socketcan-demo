@@ -166,7 +166,9 @@ int main(int argc, char **argv)
     /* Setup code */
     sigval = 0;
 
-    /* Set up cyclic messages */
+    /* Set up cyclic messages. Note that both SETTIMER and STARTTIMER are
+     * required as flags in order to continue transmitting.
+     */
     msg.msg_head.opcode  = TX_SETUP;
     msg.msg_head.can_id  = 0;
     msg.msg_head.flags   = SETTIMER | STARTTIMER;
@@ -205,7 +207,7 @@ int main(int argc, char **argv)
            iface);
 
     /* Spin forever here */
-    while (0 == sigval);
+    while (0 == sigval) usleep(DELAY);
 
     puts("\nGoodbye!");
 
