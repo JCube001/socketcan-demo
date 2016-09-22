@@ -1,28 +1,39 @@
+TARGETS=socketcan-raw-demo socketcan-bcm-demo socketcan-cyclic-demo
+SRCDIR=src
+
+# Compiler setup
 CC=gcc
-CPPFLAGS=-I.
-CFLAGS=-g -Wall -Wextra -std=gnu11 -pedantic
+CPPFLAGS=-Isrc
+CFLAGS=-std=gnu11 -pedantic -Wall -Wextra
 LIBS=
 
+# Programs
 RM=rm -f
 
-.PHONY: all clean rebuild
+# Rules
+.PHONY: all debug clean rebuild
 
-all: socketcan-raw-demo socketcan-bcm-demo socketcan-cyclic-demo
+all: CPPFLAGS+=-DNDEBUG
+all: CFLAGS+=-O3
+all: $(TARGETS)
 
-socketcan-raw-demo: socketcan-raw-demo.o util.o
+debug: CFLAGS+=-g
+debug: $(TARGETS)
+
+socketcan-raw-demo: $(SRCDIR)/socketcan-raw-demo.o $(SRCDIR)/util.o
 	$(CC) -o $@ $^ $(LIBS)
 
-socketcan-bcm-demo: socketcan-bcm-demo.o util.o
+socketcan-bcm-demo: $(SRCDIR)/socketcan-bcm-demo.o $(SRCDIR)/util.o
 	$(CC) -o $@ $^ $(LIBS)
 
-socketcan-cyclic-demo: socketcan-cyclic-demo.o
+socketcan-cyclic-demo: $(SRCDIR)/socketcan-cyclic-demo.o
 	$(CC) -o $@ $^ $(LIBS)
 
 %.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 clean:
-	$(RM) *.o
+	$(RM) $(SRCDIR)/*.o
 	$(RM) socketcan-raw-demo
 	$(RM) socketcan-bcm-demo
 	$(RM) socketcan-cyclic-demo
