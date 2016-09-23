@@ -2,9 +2,9 @@ TARGETS=socketcan-raw-demo socketcan-bcm-demo socketcan-cyclic-demo
 SRCDIR=src
 
 # Compiler setup
-CC=gcc
+CXX=g++
 CPPFLAGS=-Isrc
-CFLAGS=-std=gnu11 -pedantic -Wall -Wextra
+CXXFLAGS=-std=gnu++14 -pedantic -Wall -Wextra
 LIBS=
 
 # Programs
@@ -14,23 +14,23 @@ RM=rm -f
 .PHONY: all debug clean rebuild
 
 all: CPPFLAGS+=-DNDEBUG
-all: CFLAGS+=-O3
+all: CXXFLAGS+=-O3
 all: $(TARGETS)
 
-debug: CFLAGS+=-g
+debug: CXXFLAGS+=-g
 debug: $(TARGETS)
 
-socketcan-raw-demo: $(SRCDIR)/socketcan-raw-demo.o $(SRCDIR)/util.o
-	$(CC) -o $@ $^ $(LIBS)
+socketcan-raw-demo: $(SRCDIR)/socketcan-raw-demo.o
+	$(CXX) -o $@ $^ $(LIBS)
 
 socketcan-bcm-demo: $(SRCDIR)/socketcan-bcm-demo.o $(SRCDIR)/util.o
-	$(CC) -o $@ $^ $(LIBS)
+	$(CXX) -o $@ $^ $(LIBS)
 
 socketcan-cyclic-demo: $(SRCDIR)/socketcan-cyclic-demo.o
-	$(CC) -o $@ $^ $(LIBS)
+	$(CXX) -o $@ $^ $(LIBS)
 
-%.o: %.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+%.o: %.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 clean:
 	$(RM) $(SRCDIR)/*.o
